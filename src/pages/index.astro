@@ -1,16 +1,29 @@
 ---
+import fs from "node:fs";
 
+try {
+  fs.accessSync("/tmp/count.txt");
+} catch {
+  fs.writeFileSync("/tmp/count.txt", "0");
+}
+
+const count = fs.readFileSync("/tmp/count.txt", "utf-8");
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content="{Astro.generator}" />
+    <title>Astro</title>
+  </head>
+  <body>
+    <h1>
+      Count: <span id="count">{count}</span>
+    </h1>
+    <button hx-post="/api/increment" hx-swap="none"> Increment </button>
+    <button hx-post="/api/decrement" hx-swap="none"> Decrement </button>
+  </body>
 </html>
+<script src="https://unpkg.com/htmx.org@1"></script>
